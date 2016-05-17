@@ -22,14 +22,14 @@ Please note to include corresponding Prism plugins if you need its functionality
 ## Usage
 Just write code using fenced code block syntax as usual. Additional options for Prism can be specified either inline or using a preset defined inside pelican config file.
 
-```
-\`\`\`python preset=mypreset lineno=True line=1-4,7
-# some code
-\`\`\`
-```
+    ```python preset=mypreset lineno=True line=1-4,7
+    # some code
+    ```
 
 #### Inline options
-Inline options are specified directly right after the opening fence, in the same line. It has the format `language( key=value)*`. Note that the first `language` option is mandatory, as Prism doesn't auto detect language. See Prism official site for a list of [supported languages](http://prismjs.com/index.html#languages-list).
+Inline options are specified directly right after the opening fence, in the same line. It has the format `language( key=value)*`.
+
+Note that the first `language` option is mandatory, as Prism doesn't auto detect language. See Prism official site for a list of [supported languages](http://prismjs.com/index.html#languages-list).
 
 Inline options take precedence over options set in preset. So you can load a preset and override some specific options.
 
