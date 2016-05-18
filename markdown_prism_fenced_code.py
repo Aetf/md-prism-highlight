@@ -64,9 +64,13 @@ class PrismFencedCodeExtension(Extension):
         """ Add PrismFencedBlockPreprocessor to the Markdown instance. """
         md.registerExtension(self)
 
-        md.preprocessors.add('prism_fenced_code_block',
-                             PrismFencedBlockPreprocessor(md, self.config),
-                             ">normalize_whitespace")
+        if 'fenced_code_block' in md.preprocessors:
+            md.preprocessors['fenced_code_block'] = PrismFencedBlockPreprocessor(md, self.config)
+        else:
+            # fenced_code_block not loaded yet
+            md.preprocessors.add('prism_fenced_code_block',
+                                 PrismFencedBlockPreprocessor(md, self.config),
+                                 ">normalize_whitespace")
 
 
 class PrismFencedBlockPreprocessor(Preprocessor):

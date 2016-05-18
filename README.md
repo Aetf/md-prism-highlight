@@ -3,7 +3,7 @@ Pelican plugin that highlight codeblocks in markdown using [Prism](http://prismj
 
 This is done by providing a custom markdown fenced code block extension that replaces the original one.
 
-Note: This conflicts with the default codehilite extension enabled by pelican, you have to explicitly disable it.
+Note: remember to remove the default codehilite extension which is enabled by pelican.
 
 ## Installation
 

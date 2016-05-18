@@ -16,7 +16,7 @@ except ImportError as e:
     print("\nMarkdown is not installed - Prism Highlight Markdown Extension disabled\n")
 
 
-def pelican_init(pelicanobj):
+def init(pelicanobj):
     """Loads settings and instantiates the Python Markdown extension"""
 
     if not PrismFencedCodeExtension:
@@ -55,7 +55,6 @@ def apply_markdown_extension(pelicanobj, config):
     # Instantiate Markdown extension and append it to the current extensions
     try:
         pelicanobj.settings['MD_EXTENSIONS'].append(PrismFencedCodeExtension(config))
-        # TODO: disable fenced_code and codehilite
     except:
         sys.excepthook(*sys.exc_info())
         sys.stderr.write("\nError - md-prism-highlight failed to load\n")
@@ -63,4 +62,4 @@ def apply_markdown_extension(pelicanobj, config):
 
 def register():
     """Plugin registration"""
-    signals.initialized.connect(pelican_init)
+    signals.readers_init.connect(init)
