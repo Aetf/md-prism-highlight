@@ -17,9 +17,10 @@ class PrismConfig(object):
         """Create a config object with presets dictionary"""
         super(PrismConfig, self).__init__()
         self.presets = presets
-        self.update('preset=default')
         self.classes = []
         self.data = {}
+
+        self.update('preset=default')
 
     def _set(self, key, value):
         """Set key value"""
