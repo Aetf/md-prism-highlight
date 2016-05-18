@@ -36,6 +36,7 @@ def process_settings(pelicanobj):
     settings = {
         "default": {
             "lineno": True,
+            "max-height": "30em",
         }
     }
 

@@ -8,6 +8,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from markdown import Extension
 from markdown.preprocessors import Preprocessor
+from copy import copy
 import re
 
 
@@ -19,11 +20,13 @@ class PrismConfig(object):
         self.presets = presets
         self.classes = []
         self.data = {}
+        self.styles = []
 
         self.update('preset=default')
 
     def _set(self, key, value):
         """Set key value"""
+        value = str(value)
         if key == 'lineno':
             value = value == 'True'
             lineno_class = 'line-numbers'
@@ -31,6 +34,8 @@ class PrismConfig(object):
                 self.classes.append(lineno_class)
             elif not value and lineno_class in self.classes:
                 self.classes.remove(lineno_class)
+        elif key == 'max-height':
+            self.styles.append('%s: %s;' % (key, value))
         else:
             self.data[key] = value
 
@@ -40,20 +45,34 @@ class PrismConfig(object):
             key, value = pair.split('=')
             if key == 'preset':
                 if value in self.presets:
-                    for k, v in self.presets.items():
+                    for k, v in self.presets[value].items():
                         self._set(k, v)
             else:
                 self._set(key, value)
 
+    def clone(self):
+        """Clone a deep copy"""
+        obj = PrismConfig(self.presets)
+        obj.classes = copy(self.classes)
+        obj.data = copy(self.data)
+        return obj
 
     def pre_class(self):
         """Returns a list of classes that should be applied to pre element"""
+        print('classes are ', self.classes)
         return self.classes
+
+    def pre_style(self):
+        """Returns a list of inline styles that should be applied to pre element"""
+        print('styles are ', self.styles)
+        return self.styles
 
     def data_attr(self):
         """Returns a list of string in the format key=value
            that should be add to pre element as extra data attributes"""
-        return ['%s="%s"' % (k, v) for k, v in self.data.items()]
+        res =['%s="%s"' % (k, v) for k, v in self.data.items()] 
+        print('data attr are ', res)
+        return res
 
 class PrismFencedCodeExtension(Extension):
     """Markdown extension that provides fenced code block"""
@@ -83,7 +102,7 @@ class PrismFencedBlockPreprocessor(Preprocessor):
 (?P=brace)[ ]*\n                                # Optional closing }
 (?P<code>.*?)(?<=\n)
 (?P=fence)[ ]*$''', re.MULTILINE | re.DOTALL | re.VERBOSE)
-    CODE_WRAP = '<pre class="%s" %s><code%s>%s</code></pre>'
+    CODE_WRAP = '<pre class="%s" style="%s" %s><code%s>%s</code></pre>'
     LANG_TAG = ' class="language-%s"'
 
     def __init__(self, md, config):
@@ -96,6 +115,7 @@ class PrismFencedBlockPreprocessor(Preprocessor):
         while True:
             m = self.FENCED_BLOCK_RE.search(text)
             if m:
+                config = self.config.clone()
                 lang = ''
                 if m.group('lang'):
                     lang = self.LANG_TAG % m.group('lang')
@@ -103,10 +123,11 @@ class PrismFencedBlockPreprocessor(Preprocessor):
                     lang = self.LANG_TAG % 'none'
 
                 if m.group('pairs'):
-                    self.config.update(m.group('pairs'))
+                    config.update(m.group('pairs'))
 
-                code = self.CODE_WRAP % (' '.join(self.config.pre_class()),
-                                         ' '.join(self.config.data_attr()),
+                code = self.CODE_WRAP % (' '.join(config.pre_class()),
+                                         ' '.join(config.pre_style()),
+                                         ' '.join(config.data_attr()),
                                          lang,
                                          self._escape(m.group('code')))
 
