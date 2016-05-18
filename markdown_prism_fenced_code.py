@@ -59,20 +59,17 @@ class PrismConfig(object):
 
     def pre_class(self):
         """Returns a list of classes that should be applied to pre element"""
-        print('classes are ', self.classes)
         return self.classes
 
     def pre_style(self):
         """Returns a list of inline styles that should be applied to pre element"""
-        print('styles are ', self.styles)
         return self.styles
 
     def data_attr(self):
         """Returns a list of string in the format key=value
            that should be add to pre element as extra data attributes"""
-        res =['%s="%s"' % (k, v) for k, v in self.data.items()] 
-        print('data attr are ', res)
-        return res
+        return ['%s="%s"' % (k, v) for k, v in self.data.items()]
+
 
 class PrismFencedCodeExtension(Extension):
     """Markdown extension that provides fenced code block"""
