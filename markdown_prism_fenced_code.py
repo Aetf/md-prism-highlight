@@ -18,7 +18,7 @@ class PrismConfig(object):
         """Create a config object with presets dictionary"""
         super(PrismConfig, self).__init__()
         self.presets = presets
-        self.classes = []
+        self.classes = set()
         self.data = {}
         self.styles = []
 
@@ -30,12 +30,15 @@ class PrismConfig(object):
         if key == 'lineno':
             value = value == 'True'
             lineno_class = 'line-numbers'
-            if value and lineno_class not in self.classes:
-                self.classes.append(lineno_class)
-            elif not value and lineno_class in self.classes:
-                self.classes.remove(lineno_class)
+            if value:
+                self.classes.add(lineno_class)
+            else:
+                self.classes.discard(lineno_class)
         elif key == 'max-height':
             self.styles.append('%s: %s;' % (key, value))
+        elif key == 'classes':
+            for clz in value.split(','):
+                self.classes.add(clz)
         else:
             self.data[key] = value
 

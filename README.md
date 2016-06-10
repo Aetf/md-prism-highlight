@@ -58,4 +58,5 @@ PRISM_PRESET = {
 |:---:|:---:|:---:|
 | `preset` | None | Load a preset. Only available for inline option |
 | `lineno` | `True` | Whether enable line number |
+| `classes` | None | Additional classes applied to the `pre` tag. |
 | other | None | Directly passed as a data attribute of the `pre` tag. For example, `line=1-4,7` will be `<pre data-line="1-4,7">`. This way, you can pass arbitrary options to Prism |
