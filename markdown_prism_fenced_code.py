@@ -68,7 +68,7 @@ class PrismConfig(object):
     def data_attr(self):
         """Returns a list of string in the format key=value
            that should be add to pre element as extra data attributes"""
-        return ['%s="%s"' % (k, v) for k, v in self.data.items()]
+        return ['data-%s="%s"' % (k, v) for k, v in self.data.items()]
 
 
 class PrismFencedCodeExtension(Extension):
