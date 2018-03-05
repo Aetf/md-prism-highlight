@@ -1,3 +1,8 @@
+# No longer maintained
+I have migrated to [hexo](https://hexo.io/) as my blogging platform.
+And I've reimplemented this plugin in hexo: [hexo-prism-plus](Aetf/hexo-prism-plus). Check that out if you
+are also interested in hexo.
+
 # md-prism-highlight
 Pelican plugin that highlight codeblocks in markdown using [Prism](http://prismjs.com/index.html).
 
